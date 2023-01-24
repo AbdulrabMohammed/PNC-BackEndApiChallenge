@@ -34,15 +34,15 @@ public class UserRegistrationServiceImpl {
     }
 
 
-    public String httpResponse() throws IOException, InterruptedException {
+    public String httpResponse(User user) throws IOException, InterruptedException {
         HttpClient httpClient = HttpClient.newHttpClient();// sets up a default client
-        HttpRequest httpRequest = HttpRequest.newBuilder().uri(URI.create("http://ip-api.com/json")).build(); // Makes a Get-request to Ip-API
+        HttpRequest httpRequest = HttpRequest.newBuilder().uri(URI.create("http://ip-api.com/json/"+user.getIpAddress())).build(); // Makes a Get-request to Ip-API
         HttpResponse<String> stringHttpResponseResponse = httpClient.send(httpRequest,HttpResponse.BodyHandlers.ofString());
         return stringHttpResponseResponse.body();
 
     }
-    private Boolean checkValidIpLocation() throws Exception {
-        JSONObject jsonObject = new JSONObject(httpResponse());
+    private Boolean checkValidIpLocation(User user) throws Exception {
+        JSONObject jsonObject = new JSONObject(httpResponse(user));
         String country = jsonObject.getString("country");
         if (country.equals("Canada")){
             return true;
@@ -51,8 +51,8 @@ public class UserRegistrationServiceImpl {
 
     }
     public String successMessage(User user) throws Exception {
-        JSONObject jsonObject = new JSONObject(httpResponse());
-        if(checkValidUserName(user) && checkValidPassword(user) && checkValidIpLocation() ){
+        JSONObject jsonObject = new JSONObject(httpResponse(user));
+        if(checkValidUserName(user) && checkValidPassword(user) && checkValidIpLocation(user) ){
             UUID uuid = UUID.randomUUID();
             String name = user.getUsername();
             String city = jsonObject.getString("city");

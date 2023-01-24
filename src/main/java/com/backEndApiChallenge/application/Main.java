@@ -18,10 +18,10 @@ public class Main {
 
         user.setUsername("userName");
         user.setPassword("pwd1233AAA#$$%");
-
-        String httpResponse = userRegistrationService.httpResponse();
-        JSONObject jsonObject = new JSONObject(httpResponse);
-        user.setIpAddress(jsonObject.getString("query"));
+        user.setIpAddress("100.42.23.255");
+//        String httpResponse = userRegistrationService.httpResponse(user);
+//        JSONObject jsonObject = new JSONObject(httpResponse);
+//        user.setIpAddress(jsonObject.getString("query"));
 
         System.out.println(userRegistrationController.verifyUser(user));
     }
